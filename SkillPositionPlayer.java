@@ -22,13 +22,18 @@ public class SkillPositionPlayer {
     private int receptions;
     private int receivingYards;
     private int receivingTouchdowns;
+    //2 point conversion statistics
+    private int twoPointConversions;
     //turnover statistics
     private int interceptions;
     private int fumblesLost;
+    //amount of fantasy points
+    private double points;
 
     public SkillPositionPlayer(String name, String position, int passingYards, int passingTouchdowns,
                                int rushingYards, int rushingTouchdowns, int receptions, int receivingYards,
-                               int receivingTouchdowns, int interceptions, int fumblesLost) {
+                               int receivingTouchdowns, int twoPointConversions, int interceptions,
+                               int fumblesLost, double points) {
         this.name = name;
         this.position = position;
         this.passingYards = passingYards;
@@ -38,8 +43,10 @@ public class SkillPositionPlayer {
         this.receptions = receptions;
         this.receivingYards = receivingYards;
         this.receivingTouchdowns = receivingTouchdowns;
+        this.twoPointConversions = twoPointConversions;
         this.interceptions = interceptions;
         this.fumblesLost = fumblesLost;
+        this.points = points;
     }
 
     public String getName() {
@@ -114,6 +121,14 @@ public class SkillPositionPlayer {
         this.receivingTouchdowns = receivingTouchdowns;
     }
 
+    public int getTwoPointConversions() {
+        return twoPointConversions;
+    }
+
+    public void setTwoPointConversions(int twoPointConversions) {
+        this.twoPointConversions = twoPointConversions;
+    }
+
     public int getInterceptions() {
         return interceptions;
     }
@@ -128,5 +143,13 @@ public class SkillPositionPlayer {
 
     public void setFumblesLost(int fumblesLost) {
         this.fumblesLost = fumblesLost;
+    }
+
+    public double getPoints() {
+        return points;
+    }
+
+    public void setPoints(double points) {
+        this.points = points;
     }
 }
