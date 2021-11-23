@@ -85,7 +85,7 @@ public class FantasyFootballApplication {
          }
          rosterOneSkillPlayers.add(firstFlex);
          */
-        //DefenseAndSpecialTeams dAndSt = 
+        //DefenseAndSpecialTeams dAndSt =
 
         //if the league scoring system is 1 point ppr, calculate total fantasy points for roster using formula
         if (leagueScoringSystem.equals("1 point ppr")) {
@@ -194,6 +194,52 @@ public class FantasyFootballApplication {
                 passingTds, rushingYds, rushingTds, receptions, receivingYds, receivingTds, twoPointConversions,
                 interceptions, fumbles, 0);
         return player;
+    }
+
+    //create a D/ST player with their statistics
+    public static SkillPositionPlayer createDefenseAndSt(String position) {
+        //name
+        String playerName = enterPlayerNameDialog(position);
+        if (quitProgram == 1) {
+            return null;
+        }
+        //yards allowed, points allowed, sacks
+        String defensiveStatisticsOne = enterDefensiveStatisticsOneDialog(playerName);
+        if (quitProgram == 1) {
+            return null;
+        }
+        String[] defensiveContentsOne = defensiveStatisticsOne.split(",");
+        int yardsAllowed = Integer.parseInt(defensiveContentsOne[0]);
+        int pointsAllowed = Integer.parseInt(defensiveContentsOne[1]);
+        int sacks = Integer.parseInt(defensiveContentsOne[2]);
+
+        //intereceptions, interception return TDs, fumbles recovered, fumble return TDs
+        String defensiveStatisticsTwo = enterDefensiveStatisticsTwoDialog(playerName);
+        if (quitProgram == 1) {
+            return null;
+        }
+        String[] defensiveContentsTwo = defensiveStatisticsOne.split(",");
+        int interceptions = Integer.parseInt(defensiveContentsTwo[0]);
+        int interceptionTd = Integer.parseInt(defensiveContentsTwo[1]);
+        int fumblesRecovered = Integer.parseInt(defensiveContentsTwo[2]);
+        int fumbleTds = Integer.parseInt(defensiveContentsTwo[3]);
+
+        //safeties, two point conversion returns
+        String defensiveStatisticsThree = enterDefensiveStatisticsThreeDialog(playerName);
+        if (quitProgram == 1) {
+            return null;
+        }
+        String[] defensiveContentsThree = defensiveStatisticsThree.split(",");
+        int safeties = Integer.parseInt(defensiveContentsThree[0]);
+        int twoPointConversionReturns = Integer.parseInt(defensiveContentsThree[1]);
+        /**
+        //create player
+        SkillPositionPlayer DefenseAndSpecialTeams = new DefenseAndSpecialTeams(playerName, pointsAllowed, yardsAllowed,
+                pointsAllowed, sacks, interceptions, interceptionTd, fumblesRecovered, fumbleTds, safeties,
+                twoPointConversionReturns, fumbles, 0);
+        return player;
+         */
+        return null;
     }
 
     //method to ask for the players name as input in GUI
@@ -407,8 +453,8 @@ public class FantasyFootballApplication {
         boolean enterStatistics = false;
         do {
             conversionStatistics = JOptionPane.showInputDialog(null, "Enter the amount of " +
-                            "two point conversions that " + name + " has successfully completed\nEnter a single number.",
-                    name + "'s Two Point Conversion Statistics", JOptionPane.QUESTION_MESSAGE);
+                            "two point conversions that " + name + " has successfully completed\nEnter a single " +
+                            "number.", name + "'s Two Point Conversion Statistics", JOptionPane.QUESTION_MESSAGE);
             if (conversionStatistics == null) {
                 enterStatistics = true;
                 quitProgram = 1;
@@ -503,6 +549,314 @@ public class FantasyFootballApplication {
             }
         } while (!enterStatistics);
         return turnoversStatistics;
+    }
+
+    //method to ask for input of defensive statistics (yards allowed, points allowed, sacks)
+    public static String enterDefensiveStatisticsOneDialog(String name) {
+        String defensiveStatisticsPartOne;
+        boolean enterStatistics = false;
+        do {
+            defensiveStatisticsPartOne = JOptionPane.showInputDialog(null, "Enter " + name +
+                    "D/ST's number of yards allowed, points allowed, and sacks.\nThe format should be: " +
+                    "yards allowed,points allowed,sacks\nExample: 300 yards allowed,21 points allowed,2 sacks: " +
+                    "Enter: 300,21,2", name + "'s Defensive Statistics Part 1", JOptionPane.QUESTION_MESSAGE);
+            if (defensiveStatisticsPartOne == null) {
+                enterStatistics = true;
+                quitProgram = 1;
+            } else if (defensiveStatisticsPartOne.isBlank()) {
+                JOptionPane.showMessageDialog(null, "Statistics cannot be empty!",
+                        name + "'s Defensive Statistics Part 1", JOptionPane.ERROR_MESSAGE);
+                enterStatistics = false;
+            } else {
+                //need the string to have only 3 integers
+                String[] splitStatistics = defensiveStatisticsPartOne.split(",");
+                if (splitStatistics.length != 3) {
+                    JOptionPane.showMessageDialog(null, "Please enter statistics in the " +
+                            "correct format", name + "'s Defensive Statistics Part 1", JOptionPane.ERROR_MESSAGE);
+                    enterStatistics = false;
+                } else {
+                    //check if the input string has 3 integers (yards allowed, points allowed, sacks)
+                    int checkIfIntegers = 0;
+                    for (int i = 0; i < splitStatistics.length; i++) {
+                        try {
+                            int statisticsContent = Integer.parseInt(splitStatistics[i]);
+                        } catch (NumberFormatException exception) {
+                            checkIfIntegers++;
+                        }
+                    }
+                    if (checkIfIntegers != 0) {
+                        JOptionPane.showMessageDialog(null, "Please enter statistics in " +
+                                "the correct format", name + "'s Defensive Statistics Part 1",
+                                JOptionPane.ERROR_MESSAGE);
+                        enterStatistics = false;
+                    } else {
+                        int yardsAllowed = Integer.parseInt(splitStatistics[0]);
+                        int pointsAllowed = Integer.parseInt(splitStatistics[1]);
+                        int sacks = Integer.parseInt(splitStatistics[2]);
+                        //check if yards allowed is negative (is not possible)
+                        if (yardsAllowed < 0) {
+                            JOptionPane.showMessageDialog(null, "The amount of yards allowed "
+                                            + "cannot be negative", name + "'s Defensive Statistics Part 1",
+                                    JOptionPane.ERROR_MESSAGE);
+                            enterStatistics = false;
+                            //check if points allowed is negative (is not possible)
+                        } else if (pointsAllowed < 0) {
+                            JOptionPane.showMessageDialog(null, "The amount of " +
+                                            "points allowed cannot be negative", name + "'s Defensive " +
+                                            "Statistics Part 1", JOptionPane.ERROR_MESSAGE);
+                            enterStatistics = false;
+                            //check if sacks is negative (is not possible)
+                        } else if (sacks < 0) {
+                            JOptionPane.showMessageDialog(null, "The amount of " +
+                                            "sacks cannot be negative", name + "'s Defensive Statistics Part 1",
+                                    JOptionPane.ERROR_MESSAGE);
+                            enterStatistics = false;
+                        } else {
+                            enterStatistics = true;
+                        }
+                    }
+                }
+            }
+        } while (!enterStatistics);
+        return defensiveStatisticsPartOne;
+    }
+
+    //method to ask for input of defensive statistics (ints, int return TDs, fumbles, fumble return TDs)
+    public static String enterDefensiveStatisticsTwoDialog(String name) {
+        String defensiveStatisticsPartTwo;
+        boolean enterStatistics = false;
+        do {
+            defensiveStatisticsPartTwo = JOptionPane.showInputDialog(null, "Enter " + name +
+                    "D/ST's number of interceptions, interception return TDs, fumbles recovered and fumble return " +
+                    "TDs.\nThe format should be: interceptions,interception return TDs,fumbles recovered, fumble " +
+                    "return TDs\nExample: 0 interceptions, 0 interception return TDs, 2 fumbles recovered, 1 fumble" +
+                    "return TD: " + "Enter: 0,0,2,1", name + "'s Defensive Statistics Part 2",
+                    JOptionPane.QUESTION_MESSAGE);
+            if (defensiveStatisticsPartTwo == null) {
+                enterStatistics = true;
+                quitProgram = 1;
+            } else if (defensiveStatisticsPartTwo.isBlank()) {
+                JOptionPane.showMessageDialog(null, "Statistics cannot be empty!",
+                        name + "'s Defensive Statistics Part 2", JOptionPane.ERROR_MESSAGE);
+                enterStatistics = false;
+            } else {
+                //need the string to have only 4 integers
+                String[] splitStatistics = defensiveStatisticsPartTwo.split(",");
+                if (splitStatistics.length != 4) {
+                    JOptionPane.showMessageDialog(null, "Please enter statistics in the " +
+                            "correct format", name + "'s Defensive Statistics Part 2", JOptionPane.ERROR_MESSAGE);
+                    enterStatistics = false;
+                } else {
+                    //check if the input string has 4 integers (ints, int return TDs, fumbles, fumble return TDs)
+                    int checkIfIntegers = 0;
+                    for (int i = 0; i < splitStatistics.length; i++) {
+                        try {
+                            int statisticsContent = Integer.parseInt(splitStatistics[i]);
+                        } catch (NumberFormatException exception) {
+                            checkIfIntegers++;
+                        }
+                    }
+                    if (checkIfIntegers != 0) {
+                        JOptionPane.showMessageDialog(null, "Please enter statistics in " +
+                                        "the correct format", name + "'s Defensive Statistics Part 2",
+                                JOptionPane.ERROR_MESSAGE);
+                        enterStatistics = false;
+                    } else {
+                        int interceptions = Integer.parseInt(splitStatistics[0]);
+                        int interceptionTds = Integer.parseInt(splitStatistics[1]);
+                        int fumbles = Integer.parseInt(splitStatistics[2]);
+                        int fumbleTds = Integer.parseInt(splitStatistics[3]);
+                        //check if interceptions is negative (is not possible)
+                        if (interceptions < 0) {
+                            JOptionPane.showMessageDialog(null, "The amount of interceptions "
+                                            + "cannot be negative", name + "'s Defensive Statistics Part 2",
+                                    JOptionPane.ERROR_MESSAGE);
+                            enterStatistics = false;
+                            //check if interception return TDs is negative (is not possible)
+                        } else if (interceptionTds < 0) {
+                            JOptionPane.showMessageDialog(null, "The amount of interception" +
+                                            "return TDs cannot be negative", name + "'s Defensive " +
+                                            "Statistics Part 2", JOptionPane.ERROR_MESSAGE);
+                            enterStatistics = false;
+                            //check if fumbles recovered is negative (is not possible)
+                        } else if (fumbles < 0) {
+                            JOptionPane.showMessageDialog(null, "The amount of " +
+                                            "fumbles recovered cannot be negative", name + "'s Defensive " +
+                                            "Statistics Part 2", JOptionPane.ERROR_MESSAGE);
+                            enterStatistics = false;
+                            //check if fumble return TDs is negative (is not possible)
+                        } else if (fumbleTds < 0) {
+                            JOptionPane.showMessageDialog(null, "The amount of " +
+                                    "fumbles return TDs cannot be negative", name + "'s Defensive " +
+                                    "Statistics Part 2", JOptionPane.ERROR_MESSAGE);
+                            enterStatistics = false;
+                            //can not have any interception return tds if no interceptions
+                        } else if (interceptions == 0 && interceptionTds > 0) {
+                            JOptionPane.showMessageDialog(null, "There cannot be any " +
+                                    "interception return TDs if there are no interceptions", name + "'s " +
+                                    "Defensive Statistics Part 2", JOptionPane.ERROR_MESSAGE);
+                            enterStatistics = false;
+                            //can not have any fumble return tds if no interceptions
+                        } else if (fumbles == 0 && fumbleTds > 0) {
+                            JOptionPane.showMessageDialog(null, "There cannot be any " +
+                                    "fumble return TDs if there are no fumbles recovered", name + "'s " +
+                                    "Defensive Statistics Part 2", JOptionPane.ERROR_MESSAGE);
+                            enterStatistics = false;
+                        } else {
+                            enterStatistics = true;
+                        }
+                    }
+                }
+            }
+        } while (!enterStatistics);
+        return defensiveStatisticsPartTwo;
+    }
+
+    //method to ask for input of defensive statistics (safeties, two point conversion returns)
+    public static String enterDefensiveStatisticsThreeDialog(String name) {
+        String defensiveStatisticsPartThree;
+        boolean enterStatistics = false;
+        do {
+            defensiveStatisticsPartThree = JOptionPane.showInputDialog(null, "Enter " + name +
+                    "D/ST's number of safeties and 2 point conversion returns.\nThe format should be: " +
+                    "safeties,conversion returns\nExample: 1 safety, 1 2 pt conversion returned: " +
+                    "Enter: 1,1", name + "'s Defensive Statistics Part 3", JOptionPane.QUESTION_MESSAGE);
+            if (defensiveStatisticsPartThree == null) {
+                enterStatistics = true;
+                quitProgram = 1;
+            } else if (defensiveStatisticsPartThree.isBlank()) {
+                JOptionPane.showMessageDialog(null, "Statistics cannot be empty!",
+                        name + "'s Defensive Statistics Part 3", JOptionPane.ERROR_MESSAGE);
+                enterStatistics = false;
+            } else {
+                //need the string to have only 2 integers
+                String[] splitStatistics = defensiveStatisticsPartThree.split(",");
+                if (splitStatistics.length != 2) {
+                    JOptionPane.showMessageDialog(null, "Please enter statistics in the " +
+                            "correct format", name + "'s Defensive Statistics Part 3", JOptionPane.ERROR_MESSAGE);
+                    enterStatistics = false;
+                } else {
+                    //check if the input string has 2 integers (safeties, two point conversion returns)
+                    int checkIfIntegers = 0;
+                    for (int i = 0; i < splitStatistics.length; i++) {
+                        try {
+                            int statisticsContent = Integer.parseInt(splitStatistics[i]);
+                        } catch (NumberFormatException exception) {
+                            checkIfIntegers++;
+                        }
+                    }
+                    if (checkIfIntegers != 0) {
+                        JOptionPane.showMessageDialog(null, "Please enter statistics in " +
+                                        "the correct format", name + "'s Defensive Statistics Part 3",
+                                JOptionPane.ERROR_MESSAGE);
+                        enterStatistics = false;
+                    } else {
+                        //check if yards allowed is negative (is not possible)
+                        if (Integer.parseInt(splitStatistics[0]) < 0) {
+                            JOptionPane.showMessageDialog(null, "The amount of safeties "
+                                            + "cannot be negative", name + "'s Defensive Statistics Part 3",
+                                    JOptionPane.ERROR_MESSAGE);
+                            enterStatistics = false;
+                            //check if points allowed is negative (is not possible)
+                        } else if (Integer.parseInt(splitStatistics[1]) < 0) {
+                            JOptionPane.showMessageDialog(null, "The amount of " +
+                                    "2 point conversion returns cannot be negative", name + "'s Defensive " +
+                                    "Statistics Part 3", JOptionPane.ERROR_MESSAGE);
+                            enterStatistics = false;
+                        } else {
+                            enterStatistics = true;
+                        }
+                    }
+                }
+            }
+        } while (!enterStatistics);
+        return defensiveStatisticsPartThree;
+    }
+
+    //method to ask for input of ST statistics (blocked FG/punts, blocked FG/punt TDs, kickoff and punt return TDs)
+    public static String enterSpecialTeamsStatisticsDialog(String name) {
+        String specialTeamsStatistics;
+        boolean enterStatistics = false;
+        do {
+            specialTeamsStatistics = JOptionPane.showInputDialog(null, "Enter " + name +
+                            "D/ST's number of blocked FG/punts, blocked FG/punts return TDs, kickoff return TDs and " +
+                            "punt return TDs.\nThe format should be: blocked FG/punts,blocked FG/punts return TDs," +
+                            "kickoff return TDs and punt return TDs\nExample: 1 blocked FG/punt, 0 blocked FG/punt " +
+                            "return TDs, 1 kickoff return TD, 0 punt return TD: " + "Enter: 1,0,1,0", 
+                    name + "'s Special Teams Statistics", JOptionPane.QUESTION_MESSAGE);
+            if (specialTeamsStatistics == null) {
+                enterStatistics = true;
+                quitProgram = 1;
+            } else if (specialTeamsStatistics.isBlank()) {
+                JOptionPane.showMessageDialog(null, "Statistics cannot be empty!",
+                        name + "'s Special Teams Statistics", JOptionPane.ERROR_MESSAGE);
+                enterStatistics = false;
+            } else {
+                //need the string to have only 4 integers
+                String[] splitStatistics = specialTeamsStatistics.split(",");
+                if (splitStatistics.length != 4) {
+                    JOptionPane.showMessageDialog(null, "Please enter statistics in the " +
+                            "correct format", name + "'s Special Teams Statistics", JOptionPane.ERROR_MESSAGE);
+                    enterStatistics = false;
+                } else {
+                    //check if the input string has 4 integers (blocked punts/FG and TD, kickoff and punt return TDs)
+                    int checkIfIntegers = 0;
+                    for (int i = 0; i < splitStatistics.length; i++) {
+                        try {
+                            int statisticsContent = Integer.parseInt(splitStatistics[i]);
+                        } catch (NumberFormatException exception) {
+                            checkIfIntegers++;
+                        }
+                    }
+                    if (checkIfIntegers != 0) {
+                        JOptionPane.showMessageDialog(null, "Please enter statistics in " +
+                                        "the correct format", name + "'s Special Teams Statistics",
+                                JOptionPane.ERROR_MESSAGE);
+                        enterStatistics = false;
+                    } else {
+                        int blockedPuntOrFg = Integer.parseInt(splitStatistics[0]);
+                        int blockedPuntOrFgTd = Integer.parseInt(splitStatistics[1]);
+                        int kickoffReturnTd = Integer.parseInt(splitStatistics[2]);
+                        int puntReturnTd = Integer.parseInt(splitStatistics[3]);
+                        //check if interceptions is negative (is not possible)
+                        if (blockedPuntOrFg < 0) {
+                            JOptionPane.showMessageDialog(null, "The amount of blocked punt/" +
+                                            "FG cannot be negative", name + "'s Special Teams Statistics",
+                                    JOptionPane.ERROR_MESSAGE);
+                            enterStatistics = false;
+                            //check if interception return TDs is negative (is not possible)
+                        } else if (blockedPuntOrFgTd < 0) {
+                            JOptionPane.showMessageDialog(null, "The amount of blocked punt/" +
+                                    "FG return TDs cannot be negative", name + "'s Special Teams Statistics", 
+                                    JOptionPane.ERROR_MESSAGE);
+                            enterStatistics = false;
+                            //check if fumbles recovered is negative (is not possible)
+                        } else if (kickoffReturnTd < 0) {
+                            JOptionPane.showMessageDialog(null, "The amount of kickoff " +
+                                    "return TDs cannot be negative", name + "'s Special Teams Statistics", 
+                                    JOptionPane.ERROR_MESSAGE);
+                            enterStatistics = false;
+                            //check if fumble return TDs is negative (is not possible)
+                        } else if (puntReturnTd < 0) {
+                            JOptionPane.showMessageDialog(null, "The amount of punt return" +
+                                    "TDs cannot be negative", name + "'s Special Teams Statistics", 
+                                    JOptionPane.ERROR_MESSAGE);
+                            enterStatistics = false;
+                            //can not have any interception return tds if no interceptions
+                        } else if (blockedPuntOrFg == 0 && blockedPuntOrFgTd > 0) {
+                            JOptionPane.showMessageDialog(null, "There cannot be any " +
+                                    "blocked punt/FG return TDs if there are no blocked punt/FGs", name + 
+                                    "'s Special Teams Statistics", JOptionPane.ERROR_MESSAGE);
+                            enterStatistics = false;
+                            //can not have any fumble return tds if no interceptions
+                        } else {
+                            enterStatistics = true;
+                        }
+                    }
+                }
+            }
+        } while (!enterStatistics);
+        return specialTeamsStatistics;
     }
 
     //calculate the amount of fantasy points using multiple formulas then set points to tne skill position player
