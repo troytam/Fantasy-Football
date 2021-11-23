@@ -54,47 +54,51 @@ public class FantasyFootballApplication {
         }
         rosterOneSkillPlayers.add(firstQb);
         /**
-        SkillPositionPlayer firstRbOne = createPlayer("Running Back One");
-        if (quitProgram == 1) {
-            return;
-        }
-        rosterOneSkillPlayers.add(firstRbOne);
-        SkillPositionPlayer firstRbTwo = createPlayer("Running Back Two");
-        if (quitProgram == 1) {
-            return;
-        }
-        rosterOneSkillPlayers.add(firstRbTwo);
-        SkillPositionPlayer firstWrOne = createPlayer("Wide Receiver One");
-        if (quitProgram == 1) {
-            return;
-        }
-        rosterOneSkillPlayers.add(firstWrOne);
-        SkillPositionPlayer firstWrTwo = createPlayer("Wide Receiver Two");
-        if (quitProgram == 1) {
-            return;
-        }
-        rosterOneSkillPlayers.add(firstWrTwo);
-        SkillPositionPlayer firstTe = createPlayer("Tight End");
-        if (quitProgram == 1) {
-            return;
-        }
-        rosterOneSkillPlayers.add(firstTe);
-        SkillPositionPlayer firstFlex = createPlayer("Flex");
-        if (quitProgram == 1) {
-            return;
-        }
-        rosterOneSkillPlayers.add(firstFlex);
+         SkillPositionPlayer firstRbOne = createPlayer("Running Back One");
+         if (quitProgram == 1) {
+         return;
+         }
+         rosterOneSkillPlayers.add(firstRbOne);
+         SkillPositionPlayer firstRbTwo = createPlayer("Running Back Two");
+         if (quitProgram == 1) {
+         return;
+         }
+         rosterOneSkillPlayers.add(firstRbTwo);
+         SkillPositionPlayer firstWrOne = createPlayer("Wide Receiver One");
+         if (quitProgram == 1) {
+         return;
+         }
+         rosterOneSkillPlayers.add(firstWrOne);
+         SkillPositionPlayer firstWrTwo = createPlayer("Wide Receiver Two");
+         if (quitProgram == 1) {
+         return;
+         }
+         rosterOneSkillPlayers.add(firstWrTwo);
+         SkillPositionPlayer firstTe = createPlayer("Tight End");
+         if (quitProgram == 1) {
+         return;
+         }
+         rosterOneSkillPlayers.add(firstTe);
+         SkillPositionPlayer firstFlex = createPlayer("Flex");
+         if (quitProgram == 1) {
+         return;
+         }
+         rosterOneSkillPlayers.add(firstFlex);
          */
+        //DefenseAndSpecialTeams dAndSt = 
 
         //if the league scoring system is 1 point ppr, calculate total fantasy points for roster using formula
         if (leagueScoringSystem.equals("1 point ppr")) {
             for (int i = 0; i < rosterOneSkillPlayers.size(); i++) {
-                teamOneTotalPoints += calculateOnePointPprFantasyPoints(rosterOneSkillPlayers.get(i));
+                double playersPoints = Math.round(calculateOnePointPprFantasyPoints(rosterOneSkillPlayers.get(i))
+                        * 100.0) / 100.0;
+                rosterOneSkillPlayers.get(i).setPoints(playersPoints);
+                teamOneTotalPoints += playersPoints;
                 System.out.println(rosterOneSkillPlayers.get(i).getName());
                 System.out.println(rosterOneSkillPlayers.get(i).getPoints());
             }
         }
-        System.out.printf("%.2f",teamOneTotalPoints);
+        System.out.printf("%.2f", teamOneTotalPoints);
     }
 
     //Tells the application how to determine point distribution for receptions
@@ -501,7 +505,7 @@ public class FantasyFootballApplication {
         return turnoversStatistics;
     }
 
-    //calculate the amount of fantasy points per player using multiple formulas then set fantasy points to a player
+    //calculate the amount of fantasy points using multiple formulas then set points to tne skill position player
     public static double calculateOnePointPprFantasyPoints(SkillPositionPlayer skillPositionPlayer) {
         double totalFantasyPoints = 0;
         totalFantasyPoints += (double) skillPositionPlayer.getPassingYards() * 0.04;
@@ -511,11 +515,43 @@ public class FantasyFootballApplication {
         totalFantasyPoints += (double) skillPositionPlayer.getReceptions() * 1;
         totalFantasyPoints += (double) skillPositionPlayer.getReceivingYards() * 0.1;
         totalFantasyPoints += (double) skillPositionPlayer.getReceivingTouchdowns() * 6;
-        totalFantasyPoints += (double) skillPositionPlayer.getTwoPointConversions() * 6;
+        totalFantasyPoints += (double) skillPositionPlayer.getTwoPointConversions() * 2;
         totalFantasyPoints += (double) skillPositionPlayer.getInterceptions() * -2;
         totalFantasyPoints += (double) skillPositionPlayer.getFumblesLost() * -2;
         skillPositionPlayer.setPoints(totalFantasyPoints);
-        System.out.println(totalFantasyPoints);
+        return totalFantasyPoints;
+    }
+
+    //calculate the amount of fantasy points using multiple formulas then set points to tne skill position player
+    public static double calculateHalfPointPprFantasyPoints(SkillPositionPlayer skillPositionPlayer) {
+        double totalFantasyPoints = 0;
+        totalFantasyPoints += (double) skillPositionPlayer.getPassingYards() * 0.04;
+        totalFantasyPoints += (double) skillPositionPlayer.getPassingTouchdowns() * 4;
+        totalFantasyPoints += (double) skillPositionPlayer.getRushingYards() * 0.1;
+        totalFantasyPoints += (double) skillPositionPlayer.getRushingTouchdowns() * 6;
+        totalFantasyPoints += (double) skillPositionPlayer.getReceptions() * 0.5;
+        totalFantasyPoints += (double) skillPositionPlayer.getReceivingYards() * 0.1;
+        totalFantasyPoints += (double) skillPositionPlayer.getReceivingTouchdowns() * 6;
+        totalFantasyPoints += (double) skillPositionPlayer.getTwoPointConversions() * 2;
+        totalFantasyPoints += (double) skillPositionPlayer.getInterceptions() * -2;
+        totalFantasyPoints += (double) skillPositionPlayer.getFumblesLost() * -2;
+        skillPositionPlayer.setPoints(totalFantasyPoints);
+        return totalFantasyPoints;
+    }
+
+    //calculate the amount of fantasy points using multiple formulas then set points to tne skill position player
+    public static double calculateStandardPprFantasyPoints(SkillPositionPlayer skillPositionPlayer) {
+        double totalFantasyPoints = 0;
+        totalFantasyPoints += (double) skillPositionPlayer.getPassingYards() * 0.04;
+        totalFantasyPoints += (double) skillPositionPlayer.getPassingTouchdowns() * 4;
+        totalFantasyPoints += (double) skillPositionPlayer.getRushingYards() * 0.1;
+        totalFantasyPoints += (double) skillPositionPlayer.getRushingTouchdowns() * 6;
+        totalFantasyPoints += (double) skillPositionPlayer.getReceivingYards() * 0.1;
+        totalFantasyPoints += (double) skillPositionPlayer.getReceivingTouchdowns() * 6;
+        totalFantasyPoints += (double) skillPositionPlayer.getTwoPointConversions() * 2;
+        totalFantasyPoints += (double) skillPositionPlayer.getInterceptions() * -2;
+        totalFantasyPoints += (double) skillPositionPlayer.getFumblesLost() * -2;
+        skillPositionPlayer.setPoints(totalFantasyPoints);
         return totalFantasyPoints;
     }
 
