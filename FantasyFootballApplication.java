@@ -42,51 +42,55 @@ public class FantasyFootballApplication {
             return;
         }
 
+        /**
         //Ask for name of first team
         String teamOneName = enterTeamNameDialog(1);
         if (quitProgram == 1) {
             return;
         }
+
         //Create skilled position players with statistics and add to roster
         SkillPositionPlayer firstQb = createPlayer("Quarterback");
         if (quitProgram == 1) {
             return;
         }
         rosterOneSkillPlayers.add(firstQb);
-        /**
          SkillPositionPlayer firstRbOne = createPlayer("Running Back One");
          if (quitProgram == 1) {
-         return;
+            return;
          }
          rosterOneSkillPlayers.add(firstRbOne);
          SkillPositionPlayer firstRbTwo = createPlayer("Running Back Two");
          if (quitProgram == 1) {
-         return;
+            return;
          }
          rosterOneSkillPlayers.add(firstRbTwo);
          SkillPositionPlayer firstWrOne = createPlayer("Wide Receiver One");
          if (quitProgram == 1) {
-         return;
+            return;
          }
          rosterOneSkillPlayers.add(firstWrOne);
          SkillPositionPlayer firstWrTwo = createPlayer("Wide Receiver Two");
          if (quitProgram == 1) {
-         return;
+            return;
          }
          rosterOneSkillPlayers.add(firstWrTwo);
          SkillPositionPlayer firstTe = createPlayer("Tight End");
          if (quitProgram == 1) {
-         return;
+            return;
          }
          rosterOneSkillPlayers.add(firstTe);
          SkillPositionPlayer firstFlex = createPlayer("Flex");
          if (quitProgram == 1) {
-         return;
+            return;
          }
          rosterOneSkillPlayers.add(firstFlex);
          */
-        //DefenseAndSpecialTeams dAndSt =
-
+        DefenseAndSpecialTeams firstDAndSt = createDefenseAndSt("D/ST");
+        if (quitProgram == 1) {
+            return;
+        }
+        /**
         //if the league scoring system is 1 point ppr, calculate total fantasy points for roster using formula
         if (leagueScoringSystem.equals("1 point ppr")) {
             for (int i = 0; i < rosterOneSkillPlayers.size(); i++) {
@@ -99,6 +103,11 @@ public class FantasyFootballApplication {
             }
         }
         System.out.printf("%.2f", teamOneTotalPoints);
+         */
+
+        double dAndStPoints = Math.round(calculateDefenseAndSpecialTeamsFantasyPoints(firstDAndSt) * 100)/ 100;
+        System.out.println(dAndStPoints);
+
     }
 
     //Tells the application how to determine point distribution for receptions
@@ -144,6 +153,7 @@ public class FantasyFootballApplication {
         if (quitProgram == 1) {
             return null;
         }
+
         //passing
         String passing = enterPassingStatisticsDialog(playerName);
         if (quitProgram == 1) {
@@ -197,12 +207,13 @@ public class FantasyFootballApplication {
     }
 
     //create a D/ST player with their statistics
-    public static SkillPositionPlayer createDefenseAndSt(String position) {
+    public static DefenseAndSpecialTeams createDefenseAndSt(String position) {
         //name
-        String playerName = enterPlayerNameDialog(position);
+        String playerName = enterDefenseAndSpecialTeamsNameDialog(position);
         if (quitProgram == 1) {
             return null;
         }
+
         //yards allowed, points allowed, sacks
         String defensiveStatisticsOne = enterDefensiveStatisticsOneDialog(playerName);
         if (quitProgram == 1) {
@@ -213,12 +224,12 @@ public class FantasyFootballApplication {
         int pointsAllowed = Integer.parseInt(defensiveContentsOne[1]);
         int sacks = Integer.parseInt(defensiveContentsOne[2]);
 
-        //intereceptions, interception return TDs, fumbles recovered, fumble return TDs
+        //interceptions, interception return TDs, fumbles recovered, fumble return TDs
         String defensiveStatisticsTwo = enterDefensiveStatisticsTwoDialog(playerName);
         if (quitProgram == 1) {
             return null;
         }
-        String[] defensiveContentsTwo = defensiveStatisticsOne.split(",");
+        String[] defensiveContentsTwo = defensiveStatisticsTwo.split(",");
         int interceptions = Integer.parseInt(defensiveContentsTwo[0]);
         int interceptionTd = Integer.parseInt(defensiveContentsTwo[1]);
         int fumblesRecovered = Integer.parseInt(defensiveContentsTwo[2]);
@@ -232,14 +243,24 @@ public class FantasyFootballApplication {
         String[] defensiveContentsThree = defensiveStatisticsThree.split(",");
         int safeties = Integer.parseInt(defensiveContentsThree[0]);
         int twoPointConversionReturns = Integer.parseInt(defensiveContentsThree[1]);
-        /**
+
+        //blocked punts/FG, blocked punts/FG return TDs, kickoff and punt return TDs
+        String specialTeamsStatistics = enterSpecialTeamsStatisticsDialog(playerName);
+        if (quitProgram == 1) {
+            return null;
+        }
+        String[] specialTeamsContent = specialTeamsStatistics.split(",");
+        int blockedPuntOrFg = Integer.parseInt(specialTeamsContent[0]);
+        int blockedPuntOrFgReturnTds = Integer.parseInt(specialTeamsContent[1]);
+        int kickoffReturnTds = Integer.parseInt(specialTeamsContent[2]);
+        int puntReturnTds = Integer.parseInt(specialTeamsContent[3]);
+
         //create player
-        SkillPositionPlayer DefenseAndSpecialTeams = new DefenseAndSpecialTeams(playerName, pointsAllowed, yardsAllowed,
-                pointsAllowed, sacks, interceptions, interceptionTd, fumblesRecovered, fumbleTds, safeties,
-                twoPointConversionReturns, fumbles, 0);
-        return player;
-         */
-        return null;
+        DefenseAndSpecialTeams dAndSt = new DefenseAndSpecialTeams(playerName, yardsAllowed, pointsAllowed,
+                sacks, interceptions, interceptionTd, fumblesRecovered, fumbleTds, safeties,
+                twoPointConversionReturns, blockedPuntOrFg, blockedPuntOrFgReturnTds, kickoffReturnTds, puntReturnTds,
+                0);
+        return dAndSt;
     }
 
     //method to ask for the players name as input in GUI
@@ -265,6 +286,27 @@ public class FantasyFootballApplication {
                 } else {
                     enterPlayerName = true;
                 }
+            }
+        } while (!enterPlayerName);
+        return playerName;
+    }
+
+    //method to ask for the D/STs name as input in GUI
+    public static String enterDefenseAndSpecialTeamsNameDialog(String position) {
+        String playerName;
+        boolean enterPlayerName = false;
+        do {
+            playerName = JOptionPane.showInputDialog(null, "Enter your " + position +
+                    "'s name:", "Fantasy Football", JOptionPane.QUESTION_MESSAGE);
+            if (playerName == null) {
+                enterPlayerName = true;
+                quitProgram = 1;
+            } else if (playerName.isBlank()) {
+                JOptionPane.showMessageDialog(null, "Team name cannot be empty!",
+                        "Statistics", JOptionPane.ERROR_MESSAGE);
+                enterPlayerName = false;
+            } else {
+                enterPlayerName = true;
             }
         } while (!enterPlayerName);
         return playerName;
@@ -453,8 +495,8 @@ public class FantasyFootballApplication {
         boolean enterStatistics = false;
         do {
             conversionStatistics = JOptionPane.showInputDialog(null, "Enter the amount of " +
-                            "two point conversions that " + name + " has successfully completed\nEnter a single " +
-                            "number.", name + "'s Two Point Conversion Statistics", JOptionPane.QUESTION_MESSAGE);
+                    "two point conversions that " + name + " has successfully completed\nEnter a single " +
+                    "number.", name + "'s Two Point Conversion Statistics", JOptionPane.QUESTION_MESSAGE);
             if (conversionStatistics == null) {
                 enterStatistics = true;
                 quitProgram = 1;
@@ -557,7 +599,7 @@ public class FantasyFootballApplication {
         boolean enterStatistics = false;
         do {
             defensiveStatisticsPartOne = JOptionPane.showInputDialog(null, "Enter " + name +
-                    "D/ST's number of yards allowed, points allowed, and sacks.\nThe format should be: " +
+                    " D/ST's number of yards allowed, points allowed, and sacks.\nThe format should be: " +
                     "yards allowed,points allowed,sacks\nExample: 300 yards allowed,21 points allowed,2 sacks: " +
                     "Enter: 300,21,2", name + "'s Defensive Statistics Part 1", JOptionPane.QUESTION_MESSAGE);
             if (defensiveStatisticsPartOne == null) {
@@ -586,7 +628,7 @@ public class FantasyFootballApplication {
                     }
                     if (checkIfIntegers != 0) {
                         JOptionPane.showMessageDialog(null, "Please enter statistics in " +
-                                "the correct format", name + "'s Defensive Statistics Part 1",
+                                        "the correct format", name + "'s Defensive Statistics Part 1",
                                 JOptionPane.ERROR_MESSAGE);
                         enterStatistics = false;
                     } else {
@@ -602,8 +644,8 @@ public class FantasyFootballApplication {
                             //check if points allowed is negative (is not possible)
                         } else if (pointsAllowed < 0) {
                             JOptionPane.showMessageDialog(null, "The amount of " +
-                                            "points allowed cannot be negative", name + "'s Defensive " +
-                                            "Statistics Part 1", JOptionPane.ERROR_MESSAGE);
+                                    "points allowed cannot be negative", name + "'s Defensive " +
+                                    "Statistics Part 1", JOptionPane.ERROR_MESSAGE);
                             enterStatistics = false;
                             //check if sacks is negative (is not possible)
                         } else if (sacks < 0) {
@@ -627,7 +669,7 @@ public class FantasyFootballApplication {
         boolean enterStatistics = false;
         do {
             defensiveStatisticsPartTwo = JOptionPane.showInputDialog(null, "Enter " + name +
-                    "D/ST's number of interceptions, interception return TDs, fumbles recovered and fumble return " +
+                    " D/ST's number of interceptions, interception return TDs, fumbles recovered and fumble return " +
                     "TDs.\nThe format should be: interceptions,interception return TDs,fumbles recovered, fumble " +
                     "return TDs\nExample: 0 interceptions, 0 interception return TDs, 2 fumbles recovered, 1 fumble" +
                     "return TD: " + "Enter: 0,0,2,1", name + "'s Defensive Statistics Part 2",
@@ -675,14 +717,14 @@ public class FantasyFootballApplication {
                             //check if interception return TDs is negative (is not possible)
                         } else if (interceptionTds < 0) {
                             JOptionPane.showMessageDialog(null, "The amount of interception" +
-                                            "return TDs cannot be negative", name + "'s Defensive " +
-                                            "Statistics Part 2", JOptionPane.ERROR_MESSAGE);
+                                    "return TDs cannot be negative", name + "'s Defensive " +
+                                    "Statistics Part 2", JOptionPane.ERROR_MESSAGE);
                             enterStatistics = false;
                             //check if fumbles recovered is negative (is not possible)
                         } else if (fumbles < 0) {
                             JOptionPane.showMessageDialog(null, "The amount of " +
-                                            "fumbles recovered cannot be negative", name + "'s Defensive " +
-                                            "Statistics Part 2", JOptionPane.ERROR_MESSAGE);
+                                    "fumbles recovered cannot be negative", name + "'s Defensive " +
+                                    "Statistics Part 2", JOptionPane.ERROR_MESSAGE);
                             enterStatistics = false;
                             //check if fumble return TDs is negative (is not possible)
                         } else if (fumbleTds < 0) {
@@ -718,7 +760,7 @@ public class FantasyFootballApplication {
         boolean enterStatistics = false;
         do {
             defensiveStatisticsPartThree = JOptionPane.showInputDialog(null, "Enter " + name +
-                    "D/ST's number of safeties and 2 point conversion returns.\nThe format should be: " +
+                    " D/ST's number of safeties and 2 point conversion returns.\nThe format should be: " +
                     "safeties,conversion returns\nExample: 1 safety, 1 2 pt conversion returned: " +
                     "Enter: 1,1", name + "'s Defensive Statistics Part 3", JOptionPane.QUESTION_MESSAGE);
             if (defensiveStatisticsPartThree == null) {
@@ -779,10 +821,10 @@ public class FantasyFootballApplication {
         boolean enterStatistics = false;
         do {
             specialTeamsStatistics = JOptionPane.showInputDialog(null, "Enter " + name +
-                            "D/ST's number of blocked FG/punts, blocked FG/punts return TDs, kickoff return TDs and " +
+                            " D/ST's number of blocked FG/punts, blocked FG/punts return TDs, kickoff return TDs and " +
                             "punt return TDs.\nThe format should be: blocked FG/punts,blocked FG/punts return TDs," +
                             "kickoff return TDs and punt return TDs\nExample: 1 blocked FG/punt, 0 blocked FG/punt " +
-                            "return TDs, 1 kickoff return TD, 0 punt return TD: " + "Enter: 1,0,1,0", 
+                            "return TDs, 1 kickoff return TD, 0 punt return TD: " + "Enter: 1,0,1,0",
                     name + "'s Special Teams Statistics", JOptionPane.QUESTION_MESSAGE);
             if (specialTeamsStatistics == null) {
                 enterStatistics = true;
@@ -827,25 +869,25 @@ public class FantasyFootballApplication {
                             //check if interception return TDs is negative (is not possible)
                         } else if (blockedPuntOrFgTd < 0) {
                             JOptionPane.showMessageDialog(null, "The amount of blocked punt/" +
-                                    "FG return TDs cannot be negative", name + "'s Special Teams Statistics", 
+                                            "FG return TDs cannot be negative", name + "'s Special Teams Statistics",
                                     JOptionPane.ERROR_MESSAGE);
                             enterStatistics = false;
                             //check if fumbles recovered is negative (is not possible)
                         } else if (kickoffReturnTd < 0) {
                             JOptionPane.showMessageDialog(null, "The amount of kickoff " +
-                                    "return TDs cannot be negative", name + "'s Special Teams Statistics", 
+                                            "return TDs cannot be negative", name + "'s Special Teams Statistics",
                                     JOptionPane.ERROR_MESSAGE);
                             enterStatistics = false;
                             //check if fumble return TDs is negative (is not possible)
                         } else if (puntReturnTd < 0) {
                             JOptionPane.showMessageDialog(null, "The amount of punt return" +
-                                    "TDs cannot be negative", name + "'s Special Teams Statistics", 
+                                            "TDs cannot be negative", name + "'s Special Teams Statistics",
                                     JOptionPane.ERROR_MESSAGE);
                             enterStatistics = false;
                             //can not have any interception return tds if no interceptions
                         } else if (blockedPuntOrFg == 0 && blockedPuntOrFgTd > 0) {
                             JOptionPane.showMessageDialog(null, "There cannot be any " +
-                                    "blocked punt/FG return TDs if there are no blocked punt/FGs", name + 
+                                    "blocked punt/FG return TDs if there are no blocked punt/FGs", name +
                                     "'s Special Teams Statistics", JOptionPane.ERROR_MESSAGE);
                             enterStatistics = false;
                             //can not have any fumble return tds if no interceptions
@@ -859,7 +901,7 @@ public class FantasyFootballApplication {
         return specialTeamsStatistics;
     }
 
-    //calculate the amount of fantasy points using multiple formulas then set points to tne skill position player
+    //calculate the amount of fantasy points then set points to tne skill position player
     public static double calculateOnePointPprFantasyPoints(SkillPositionPlayer skillPositionPlayer) {
         double totalFantasyPoints = 0;
         totalFantasyPoints += (double) skillPositionPlayer.getPassingYards() * 0.04;
@@ -876,7 +918,7 @@ public class FantasyFootballApplication {
         return totalFantasyPoints;
     }
 
-    //calculate the amount of fantasy points using multiple formulas then set points to tne skill position player
+    //calculate the amount of fantasy points then set points to tne skill position player
     public static double calculateHalfPointPprFantasyPoints(SkillPositionPlayer skillPositionPlayer) {
         double totalFantasyPoints = 0;
         totalFantasyPoints += (double) skillPositionPlayer.getPassingYards() * 0.04;
@@ -893,7 +935,7 @@ public class FantasyFootballApplication {
         return totalFantasyPoints;
     }
 
-    //calculate the amount of fantasy points using multiple formulas then set points to tne skill position player
+    //calculate the amount of fantasy points then set points to tne skill position player
     public static double calculateStandardPprFantasyPoints(SkillPositionPlayer skillPositionPlayer) {
         double totalFantasyPoints = 0;
         totalFantasyPoints += (double) skillPositionPlayer.getPassingYards() * 0.04;
@@ -906,6 +948,66 @@ public class FantasyFootballApplication {
         totalFantasyPoints += (double) skillPositionPlayer.getInterceptions() * -2;
         totalFantasyPoints += (double) skillPositionPlayer.getFumblesLost() * -2;
         skillPositionPlayer.setPoints(totalFantasyPoints);
+        return totalFantasyPoints;
+    }
+
+    //calculate the amount of fantasy points then set the total points for defense and special teams
+    public static double calculateDefenseAndSpecialTeamsFantasyPoints(DefenseAndSpecialTeams dAndSt) {
+        double totalFantasyPoints = 0.0;
+        int yardsAllowed = dAndSt.getYardsAllowed();
+        double yardsAllowedFantasyPoints = 0.0;
+        int pointsAllowed = dAndSt.getPointsAllowed();
+        double pointsAllowedFantasyPoints = 0.0;
+        //determine amount of fantasy points for yards allowed
+        if (yardsAllowed < 100) {
+            yardsAllowedFantasyPoints = 5.0;
+        } else if (yardsAllowed < 200) {
+            yardsAllowedFantasyPoints = 3.0;
+        } else if (yardsAllowed < 300) {
+            yardsAllowedFantasyPoints = 2.0;
+        } else if (yardsAllowed < 350) {
+            yardsAllowedFantasyPoints = 0.0;
+        } else if (yardsAllowed < 400) {
+            yardsAllowedFantasyPoints = -1.0;
+        } else if (yardsAllowed < 450) {
+            yardsAllowedFantasyPoints = -3.0;
+        } else if (yardsAllowed < 500) {
+            yardsAllowedFantasyPoints = -5.0;
+        } else if (yardsAllowed < 550) {
+            yardsAllowedFantasyPoints = -6.0;
+        } else {
+            yardsAllowedFantasyPoints = -7.0;
+        }
+        //determine amount of fantasy points for points allowed
+        if (pointsAllowed == 0) {
+            pointsAllowedFantasyPoints = 5.0;
+        } else if (pointsAllowed < 7) {
+            pointsAllowedFantasyPoints = 4.0;
+        } else if (pointsAllowed < 14) {
+            pointsAllowedFantasyPoints = 3.0;
+        } else if (pointsAllowed < 18) {
+            pointsAllowedFantasyPoints = 1.0;
+        } else if (pointsAllowed < 28) {
+            pointsAllowedFantasyPoints = -1.0;
+        } else if (pointsAllowed < 35) {
+            pointsAllowedFantasyPoints = -3.0;
+        } else {
+            pointsAllowedFantasyPoints = -5.0;
+        }
+        totalFantasyPoints += yardsAllowedFantasyPoints;
+        totalFantasyPoints += pointsAllowedFantasyPoints;
+        totalFantasyPoints += (double) dAndSt.getSacks() * 1.0;
+        totalFantasyPoints += (double) dAndSt.getDefenseInterceptions() * 2.0;
+        totalFantasyPoints += (double) dAndSt.getInterceptionReturnTd() * 6.0;
+        totalFantasyPoints += (double) dAndSt.getDefenseFumblesRecovered() * 2.0;
+        totalFantasyPoints += (double) dAndSt.getFumbleReturnTd() * 6.0;
+        totalFantasyPoints += (double) dAndSt.getSafety() * 2.0;
+        totalFantasyPoints += (double) dAndSt.getTwoPointReturn() * 2.0;
+        totalFantasyPoints += (double) dAndSt.getBlockedPuntOrFg() * 2.0;
+        totalFantasyPoints += (double) dAndSt.getBlockedPuntOrFgTd() * 6.0;
+        totalFantasyPoints += (double) dAndSt.getKickoffReturnTd() * 6.0;
+        totalFantasyPoints += (double) dAndSt.getPuntReturnTd() * 6.0;
+        dAndSt.setPoints(totalFantasyPoints);
         return totalFantasyPoints;
     }
 
