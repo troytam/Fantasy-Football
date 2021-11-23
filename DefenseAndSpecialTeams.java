@@ -1,4 +1,6 @@
 public class DefenseAndSpecialTeams {
+    //name
+    private String name;
     //defensive statistics
     private int yardsAllowed;
     private int pointsAllowed;
@@ -17,10 +19,12 @@ public class DefenseAndSpecialTeams {
     //amount of fantasy points
     private double points;
 
-    public DefenseAndSpecialTeams(int yardsAllowed, int pointsAllowed, int sacks, int defenseInterceptions,
+    public DefenseAndSpecialTeams(String name, int yardsAllowed, int pointsAllowed, int sacks, int defenseInterceptions,
                                   int interceptionReturnTd, int defenseFumblesRecovered, int fumbleReturnTd,
                                   int safety, int twoPointReturn, int blockedPuntOrFg, int blockedPuntOrFgTd,
                                   int kickoffReturnTd, int puntReturnTd, double points) {
+        //name
+        this.name = name;
         this.yardsAllowed = yardsAllowed;
         this.pointsAllowed = pointsAllowed;
         this.sacks = sacks;
@@ -35,6 +39,14 @@ public class DefenseAndSpecialTeams {
         this.kickoffReturnTd = kickoffReturnTd;
         this.puntReturnTd = puntReturnTd;
         this.points = points;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getYardsAllowed() {
