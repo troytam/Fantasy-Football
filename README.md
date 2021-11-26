@@ -1,2 +1,2 @@
-# Fantasy-Football
-Fantasy Football Application
+# Fantasy Football Application
+This is a Java-made Fantasy Football Applicationt that allows a user to enter their two rosters of 9 players (1 Quarterback, 2 Running Backs, 2 Wide Receievers, 1 Tight End, 1 Flex, 1 Defenese/Special Teams, 1 Kicker) with their statistics in order to calculate the number of fantasy points for each team. In the application, there is options for 3 different types of leagues: 1 point ppr, 0.5 point ppr, standard (no points per reception). 
