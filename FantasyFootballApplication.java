@@ -19,15 +19,17 @@ public class FantasyFootballApplication {
             "players and their statistics";
     //Types of possible leagues (determines scoring)
     private static final String[] leagueType = {"Standard league", "0.5 point ppr", "1 point ppr"};
-    //Two rosters
-    //private static SkillPositionPlayer[] rosterOneArray = new SkillPositionPlayer[7];
+    //Two rosters of skilled players
     private static ArrayList<SkillPositionPlayer> rosterOneSkillPlayers = new ArrayList<>();
+    private static ArrayList<SkillPositionPlayer> rosterTwoSkillPlayers = new ArrayList<>();
     //If ever equal to 1, quit the program
     private static int quitProgram = 0;
 
     public static void main(String[] args) {
 
+        //Total fantasy points for team
         double teamOneTotalPoints = 0;
+        double teamTwoTotalPoints = 0;
 
         //Introductory messages
         JOptionPane.showMessageDialog(null, welcomeMessage, "Fantasy Football Application",
@@ -42,77 +44,173 @@ public class FantasyFootballApplication {
             return;
         }
 
-        /**
-         //Ask for name of first team
-         String teamOneName = enterTeamNameDialog(1);
-         if (quitProgram == 1) {
-         return;
-         }
-
-         //Create skilled position players with statistics and add to roster
-         SkillPositionPlayer firstQb = createPlayer("Quarterback");
-         if (quitProgram == 1) {
-         return;
-         }
-         rosterOneSkillPlayers.add(firstQb);
-         SkillPositionPlayer firstRbOne = createPlayer("Running Back One");
-         if (quitProgram == 1) {
-         return;
-         }
-         rosterOneSkillPlayers.add(firstRbOne);
-         SkillPositionPlayer firstRbTwo = createPlayer("Running Back Two");
-         if (quitProgram == 1) {
-         return;
-         }
-         rosterOneSkillPlayers.add(firstRbTwo);
-         SkillPositionPlayer firstWrOne = createPlayer("Wide Receiver One");
-         if (quitProgram == 1) {
-         return;
-         }
-         rosterOneSkillPlayers.add(firstWrOne);
-         SkillPositionPlayer firstWrTwo = createPlayer("Wide Receiver Two");
-         if (quitProgram == 1) {
-         return;
-         }
-         rosterOneSkillPlayers.add(firstWrTwo);
-         SkillPositionPlayer firstTe = createPlayer("Tight End");
-         if (quitProgram == 1) {
-         return;
-         }
-         rosterOneSkillPlayers.add(firstTe);
-         SkillPositionPlayer firstFlex = createPlayer("Flex");
-         if (quitProgram == 1) {
-         return;
-         }
-         rosterOneSkillPlayers.add(firstFlex);
-
+        //Ask for name of first team
+        String teamOneName = enterTeamNameDialog(1);
+        if (quitProgram == 1) {
+            return;
+        }
+        //Create skilled position players with statistics and add to roster
+        SkillPositionPlayer firstQb = createPlayer("Quarterback");
+        if (quitProgram == 1) {
+            return;
+        }
+        rosterOneSkillPlayers.add(firstQb);
+        SkillPositionPlayer firstRbOne = createPlayer("Running Back One");
+        if (quitProgram == 1) {
+            return;
+        }
+        rosterOneSkillPlayers.add(firstRbOne);
+        System.out.println(firstRbOne.getPoints());
+        SkillPositionPlayer firstRbTwo = createPlayer("Running Back Two");
+        if (quitProgram == 1) {
+            return;
+        }
+        rosterOneSkillPlayers.add(firstRbTwo);
+        SkillPositionPlayer firstWrOne = createPlayer("Wide Receiver One");
+        if (quitProgram == 1) {
+            return;
+        }
+        rosterOneSkillPlayers.add(firstWrOne);
+        SkillPositionPlayer firstWrTwo = createPlayer("Wide Receiver Two");
+        if (quitProgram == 1) {
+            return;
+        }
+        rosterOneSkillPlayers.add(firstWrTwo);
+        SkillPositionPlayer firstTe = createPlayer("Tight End");
+        if (quitProgram == 1) {
+            return;
+        }
+        rosterOneSkillPlayers.add(firstTe);
+        SkillPositionPlayer firstFlex = createPlayer("Flex");
+        if (quitProgram == 1) {
+            return;
+        }
+        rosterOneSkillPlayers.add(firstFlex);
         DefenseAndSpecialTeams firstDAndSt = createDefenseAndSt("D/ST");
         if (quitProgram == 1) {
             return;
         }
-         */
         Kicker firstKicker = createKicker("Kicker");
         if (quitProgram == 1) {
             return;
         }
-        firstKicker.setPoints(Math.round((calculateKickingFantasyPoints(firstKicker) * 100.0) / 100.0));
-        System.out.println(firstKicker.getPoints());
-        /**
-         //if the league scoring system is 1 point ppr, calculate total fantasy points for roster using formula
-         if (leagueScoringSystem.equals("1 point ppr")) {
-         for (int i = 0; i < rosterOneSkillPlayers.size(); i++) {
-         double playersPoints = Math.round(calculateOnePointPprFantasyPoints(rosterOneSkillPlayers.get(i))
-         * 100.0) / 100.0;
-         rosterOneSkillPlayers.get(i).setPoints(playersPoints);
-         teamOneTotalPoints += playersPoints;
-         System.out.println(rosterOneSkillPlayers.get(i).getName());
-         System.out.println(rosterOneSkillPlayers.get(i).getPoints());
-         }
-         }
-         System.out.printf("%.2f", teamOneTotalPoints);
-         double dAndStPoints = Math.round(calculateDefenseAndSpecialTeamsFantasyPoints(firstDAndSt) * 100)/ 100;
-         */
+        
+        //Ask for name of second team
+        String teamTwoName = enterTeamNameDialog(1);
+        if (quitProgram == 1) {
+            return;
+        }
+        //Create skilled position players with statistics and add to roster
+        SkillPositionPlayer secondQb = createPlayer("Quarterback");
+        if (quitProgram == 1) {
+            return;
+        }
+        rosterTwoSkillPlayers.add(secondQb);
+        SkillPositionPlayer secondRbOne = createPlayer("Running Back Two");
+        if (quitProgram == 1) {
+            return;
+        }
+        rosterTwoSkillPlayers.add(secondRbOne);
+        SkillPositionPlayer secondRbTwo = createPlayer("Running Back Two");
+        if (quitProgram == 1) {
+            return;
+        }
+        rosterTwoSkillPlayers.add(secondRbTwo);
+        SkillPositionPlayer secondWrOne = createPlayer("Wide Receiver Two");
+        if (quitProgram == 1) {
+            return;
+        }
+        rosterTwoSkillPlayers.add(secondWrOne);
+        SkillPositionPlayer secondWrTwo = createPlayer("Wide Receiver Two");
+        if (quitProgram == 1) {
+            return;
+        }
+        rosterTwoSkillPlayers.add(secondWrTwo);
+        SkillPositionPlayer secondTe = createPlayer("Tight End");
+        if (quitProgram == 1) {
+            return;
+        }
+        rosterTwoSkillPlayers.add(secondTe);
+        SkillPositionPlayer secondFlex = createPlayer("Flex");
+        if (quitProgram == 1) {
+            return;
+        }
+        rosterTwoSkillPlayers.add(secondFlex);
+        DefenseAndSpecialTeams secondDAndSt = createDefenseAndSt("D/ST");
+        if (quitProgram == 1) {
+            return;
+        }
+        Kicker secondKicker = createKicker("Kicker");
+        if (quitProgram == 1) {
+            return;
+        }
 
+        //if the league scoring system is 1 point ppr, calculate total fantasy points for roster using formula
+        if (leagueScoringSystem.equals("1 point ppr")) {
+            for (int i = 0; i < 7; i++) {
+                double playersPointsOne = Math.round(calculateOnePointPprFantasyPoints(rosterOneSkillPlayers.get(i))
+                        * 100.0) / 100.0;
+                rosterOneSkillPlayers.get(i).setPoints(playersPointsOne);
+                teamOneTotalPoints += playersPointsOne;
+                System.out.println(rosterOneSkillPlayers.get(i).getPoints());
+                double playersPointsTwo = Math.round(calculateOnePointPprFantasyPoints(rosterTwoSkillPlayers.get(i))
+                        * 100.0) / 100.0;
+                rosterTwoSkillPlayers.get(i).setPoints(playersPointsTwo);
+                teamTwoTotalPoints += playersPointsTwo;
+            }
+        }
+
+        //if the league scoring system is 0.5 point ppr, calculate total fantasy points for roster using formula
+        if (leagueScoringSystem.equals("0.5 point ppr")) {
+            for (int i = 0; i < 7; i++) {
+                double playersPointsOne = Math.round(calculateHalfPointPprFantasyPoints(rosterOneSkillPlayers.get(i))
+                        * 100.0) / 100.0;
+                rosterOneSkillPlayers.get(i).setPoints(playersPointsOne);
+                teamOneTotalPoints += playersPointsOne;
+                double playersPointsTwo = Math.round(calculateHalfPointPprFantasyPoints(rosterTwoSkillPlayers.get(i))
+                        * 100.0) / 100.0;
+                rosterTwoSkillPlayers.get(i).setPoints(playersPointsTwo);
+                teamTwoTotalPoints += playersPointsTwo;
+            }
+        }
+
+        //if the league scoring system is a standard league, calculate total fantasy points for roster using formula
+        if (leagueScoringSystem.equals("Standard League")) {
+            for (int i = 0; i < 7; i++) {
+                double playersPointsOne = Math.round(calculateStandardFantasyPoints(rosterOneSkillPlayers.get(i))
+                        * 100.0) / 100.0;
+                rosterOneSkillPlayers.get(i).setPoints(playersPointsOne);
+                teamOneTotalPoints += playersPointsOne;
+                double playersPointsTwo = Math.round(calculateStandardFantasyPoints(rosterTwoSkillPlayers.get(i))
+                        * 100.0) / 100.0;
+                rosterTwoSkillPlayers.get(i).setPoints(playersPointsTwo);
+                teamTwoTotalPoints += playersPointsTwo;
+            }
+        }
+
+        //calculate the fantasy points for the defense and special teams, and kicker
+        double firstDAndStPointTotal = Math.round((calculateDefenseAndSpecialTeamsFantasyPoints(firstDAndSt) * 100.0)
+                / 100.0);
+        firstDAndSt.setPoints(firstDAndStPointTotal);
+        teamOneTotalPoints += firstDAndStPointTotal;
+        double firstKickerPointTotal = Math.round((calculateKickingFantasyPoints(firstKicker) * 100.0) / 100.0);
+        firstKicker.setPoints(firstKickerPointTotal);
+        teamOneTotalPoints += firstKickerPointTotal;
+
+        double secondDAndStPointTotal = Math.round((calculateKickingFantasyPoints(firstKicker) * 100.0) / 100.0);
+        secondDAndSt.setPoints(secondDAndStPointTotal);
+        teamTwoTotalPoints += secondDAndStPointTotal;
+        double secondKickerPointTotal = Math.round((calculateKickingFantasyPoints(firstKicker) * 100.0) / 100.0);
+        secondKicker.setPoints(secondKickerPointTotal);
+        teamTwoTotalPoints += secondKickerPointTotal;
+        
+        //print the messages with the scores for each team
+        JOptionPane.showMessageDialog(null, createScoreString(rosterOneSkillPlayers, firstDAndSt,
+                        firstKicker, teamOneTotalPoints), teamOneName + "'s Fantasy Points",
+                JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, createScoreString(rosterTwoSkillPlayers, secondDAndSt,
+                        secondKicker, teamTwoTotalPoints), teamOneName + "'s Fantasy Points",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     //Tells the application how to determine point distribution for receptions
@@ -310,7 +408,7 @@ public class FantasyFootballApplication {
                 enterPlayerName = false;
             } else {
                 String[] splitName = playerName.split(" ");
-                if (splitName.length != 2) {
+                if (splitName.length < 2) {
                     JOptionPane.showMessageDialog(null, "Please enter a first and last name",
                             "Passing Statistics", JOptionPane.ERROR_MESSAGE);
                     enterPlayerName = false;
@@ -700,11 +798,11 @@ public class FantasyFootballApplication {
         boolean enterStatistics = false;
         do {
             defensiveStatisticsPartTwo = JOptionPane.showInputDialog(null, "Enter " + name +
-                            " D/ST's number of interceptions, interception return TDs, fumbles recovered and fumble " +
-                            "return TDs.\nThe format should be: interceptions,interception return TDs,fumbles " +
-                            "recovered, fumble return TDs\nExample: 0 interceptions, 0 interception return TDs, 2 " +
-                            "fumbles recovered, 1 fumble return TD: " + "Enter: 0,0,2,1", name + "'s " +
-                            "Defensive Statistics Part 2", JOptionPane.QUESTION_MESSAGE);
+                    " D/ST's number of interceptions, interception return TDs, fumbles recovered and fumble " +
+                    "return TDs.\nThe format should be: interceptions,interception return TDs,fumbles " +
+                    "recovered, fumble return TDs\nExample: 0 interceptions, 0 interception return TDs, 2 " +
+                    "fumbles recovered, 1 fumble return TD: " + "Enter: 0,0,2,1", name + "'s " +
+                    "Defensive Statistics Part 2", JOptionPane.QUESTION_MESSAGE);
             if (defensiveStatisticsPartTwo == null) {
                 enterStatistics = true;
                 quitProgram = 1;
@@ -900,8 +998,8 @@ public class FantasyFootballApplication {
                             //check if interception return TDs is negative (is not possible)
                         } else if (blockedPuntOrFgTd < 0) {
                             JOptionPane.showMessageDialog(null, "The amount of blocked punt/" +
-                                            "FG return TDs cannot be negative", name + "'s Special Teams " +
-                                            "Statistics", JOptionPane.ERROR_MESSAGE);
+                                    "FG return TDs cannot be negative", name + "'s Special Teams " +
+                                    "Statistics", JOptionPane.ERROR_MESSAGE);
                             enterStatistics = false;
                             //check if fumbles recovered is negative (is not possible)
                         } else if (kickoffReturnTd < 0) {
@@ -1047,7 +1145,7 @@ public class FantasyFootballApplication {
     }
 
     //calculate the amount of fantasy points then set points to tne skill position player
-    public static double calculateStandardPprFantasyPoints(SkillPositionPlayer skillPositionPlayer) {
+    public static double calculateStandardFantasyPoints(SkillPositionPlayer skillPositionPlayer) {
         double totalFantasyPoints = 0;
         totalFantasyPoints += (double) skillPositionPlayer.getPassingYards() * 0.04;
         totalFantasyPoints += (double) skillPositionPlayer.getPassingTouchdowns() * 4;
@@ -1133,6 +1231,25 @@ public class FantasyFootballApplication {
         totalFantasyPoints += (double) kicker.getFgMissed() * -1;
         kicker.setPoints(totalFantasyPoints);
         return totalFantasyPoints;
+    }
+
+    public static String createScoreString(ArrayList <SkillPositionPlayer> skillPositionPlayers,
+                                           DefenseAndSpecialTeams defenseAndSpecialTeams, Kicker kicker,
+                                           double totalPoints) {
+        StringBuilder scoreStringBuilder = new StringBuilder();
+        for (int i = 0; i < skillPositionPlayers.size(); i++) {
+            scoreStringBuilder.append(skillPositionPlayers.get(i).getPosition() + " - ");
+            scoreStringBuilder.append(skillPositionPlayers.get(i).getName() + ": ");
+            scoreStringBuilder.append(skillPositionPlayers.get(i).getPoints());
+            scoreStringBuilder.append("\n");
+        }
+        scoreStringBuilder.append("Defense and Special Teams - " + defenseAndSpecialTeams.getName() + ": " +
+                defenseAndSpecialTeams.getPoints());
+        scoreStringBuilder.append("\n");
+        scoreStringBuilder.append("Kicker - " + kicker.getName() + ": " + kicker.getPoints());
+        scoreStringBuilder.append("\n");
+        scoreStringBuilder.append("Total Points - " + Math.round(totalPoints * 100.0) / 100.0);
+        return scoreStringBuilder.toString();
     }
 
 
